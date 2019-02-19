@@ -1,0 +1,79 @@
+---
+title: "hw3.Rmd"
+author: "Seydou Yacouba"
+date: "February 18, 2019"
+output: html_document
+---
+```{r}
+data(tips, package="reshape2")
+summary(tips)
+head(tips)
+```
+
+```{r}
+#1 Number of parties
+numParty <- nrow(tips)
+numParty
+```
+```{r}
+#2 types of variables in tips
+str(tips)
+
+```
+```{r}
+
+day <- factor(tips$day, levels = c("Thur", "Fri", "Sat", "Sun"))
+day
+
+```
+```{r}
+female5 <- tips[tips$sex =='Female'& tips$size >=5,]
+female5
+```
+```{r}
+library(ggplot2)
+ggplot(data = tips, aes(x = total_bill, y = tip)) +
+  geom_jitter() +
+  scale_x_continuous(breaks = pretty(tips$total_bill, n = 10))
+```
+From the chart above, one anomaly that I see is where a total bill is about 7 to 8 dollars and pays a tip for more than half of the bill. Its a little bit unusal. 
+
+```{r}
+#6
+tips$tiprate<- (tips$tip/tips$total_bill)
+summary(tips$tiprate)
+mean(tips$tipreate)
+
+```
+
+The average rate for tips is 0.1608
+
+```{r}
+#7
+library(ggplot2)
+ggplot(tips, aes(x=factor(time,levels = c("Lunch", "Dinner")) , y=tiprate)) + 
+geom_boxplot() + 
+scale_x_discrete("time", labels = c("Lunch", "Dinner"))
+```
+```{r}
+#8
+ggplot(tips, aes(x = total_bill, y = tip)) +
+  geom_jitter() +
+  facet_grid( smoker ~ sex) +
+  labs(y = "smokers")
+```
+
+If we look at the total bill from 30 to 50, We can see the groups of non-smokers have stronger linear relationship with less variability around the linear line.
+
+```{r}
+ggplot(tips, aes(x = day, fill = day)) +
+  geom_bar() +
+  facet_grid(.~sex)
+
+ggplot(tips, aes(x=day, fill=sex))+geom_bar(position="fill")
+```
+
+From the chart above we can see that the males pays most of the bills Saturday and Sundays. Firdays and Thursaday are pretty close.
+
+
+
